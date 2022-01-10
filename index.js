@@ -1,18 +1,37 @@
 const core = require('@actions/core');
-const wait = require('./wait');
+const { promises: fs } = require('fs')
+const funcs = require('./bump')
 
+const actions = {
+  major: funcs.incMajor,
+  minor: funcs.incMinor,
+  patch: funcs.incPatch,
+}
 
-// most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const preReleaseLabel = core.getInput('pre-release');
+    const releaseType = core.getInput('release-type');
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
+    if (!(releaseType in actions)) {
+      throw new Error("unexpected value for release types.")
+    }
 
-    core.setOutput('time', new Date().toTimeString());
+    const file = core.getInput('path');
+    let content = await fs.readFile(file, 'utf8')
+    let currentVersion = content.trim()
+    if (! await funcs.isValidSemver(currentVersion)) {
+      throw new Error('File did not contain valid semver')
+    }
+
+    let oldVersion = currentVersion
+    let newVersion = await actions[releaseType](currentVersion, preReleaseLabel)
+    if (newVersion === null) {
+      throw new Error("unable to update version")
+    }
+
+    core.setOutput('previous-version', oldVersion);
+    core.setOutput('version', newVersion);
   } catch (error) {
     core.setFailed(error.message);
   }
