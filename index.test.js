@@ -1,7 +1,7 @@
 const bump = require('./bump');
-const process = require('process');
-const cp = require('child_process');
-const path = require('path');
+// const process = require('process');
+// const cp = require('child_process');
+// const path = require('path');
 
 test('valid semver', async () => {
   let valid = await bump.isValidSemver('0.8.9-beta.0+foo')
@@ -39,10 +39,10 @@ test('increases prepatch', async () => {
 });
 
 // shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_PRE_RELEASE'] = "minor";
-  process.env['INPUT_PATH'] = "./VERSION";
-  const ip = path.join(__dirname, 'index.js');
-  const result = cp.execSync(`node ${ip}`, {env: process.env}).toString();
-  console.log(result);
-})
+// test('test runs', () => {
+//   process.env['INPUT_PRE_RELEASE'] = "minor";
+//   process.env['INPUT_PATH'] = "./VERSION";
+//   const ip = path.join(__dirname, 'index.js');
+//   const result = cp.execSync(`node ${ip}`, {env: process.env}).toString();
+//   console.log(result);
+// })
