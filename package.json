@@ -26,7 +26,7 @@
   "homepage": "https://github.com/dinosu-actions/semver-bump#readme",
   "dependencies": {
     "@actions/core": "^1.2.5",
-    "semver": "^7.3.5"
+    "semver": "^7.3.6"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.33.3",
