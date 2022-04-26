@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/dinosu-actions/semver-bump#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5",
+    "@actions/core": "^1.7.0",
     "semver": "^7.3.6"
   },
   "devDependencies": {
